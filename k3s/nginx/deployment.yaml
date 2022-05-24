@@ -1,0 +1,103 @@
+# Create nginx deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: gic6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: nginx        # default nginx image
+          name: nginx
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - name: static-files
+              mountPath: /data
+            - name: nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: static-files
+          persistentVolumeClaim:
+            claimName: nginx-static-pvc
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+
+# Create nginx service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: gic6
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: nginx
+
+# Create nginx config map
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: gic6
+data:
+  nginx.conf: |
+    user  nginx;
+
+    worker_processes  1;
+
+    error_log  /var/log/nginx/error.log warn;
+
+    pid        /var/run/nginx.pid;
+
+    events {
+      worker_connections  1024;
+    }
+
+    http {
+      include       /etc/nginx/mime.types;
+      
+      default_type  application/octet-stream;
+
+      sendfile        on;
+      
+      server {
+        listen 80 default_server;
+        server_name app.gic6.k3s;
+
+        location / {
+          # proxy_pass http://app:8080/;
+          proxy_set_header   X-Real-IP $remote_addr;
+          proxy_set_header   Host      $http_host;
+          proxy_http_version 1.1;
+          proxy_set_header Connection "";
+          proxy_pass http://misago-service:8000;
+        }
+        
+        location /static {
+          root /data;
+        }
+      }
+    }

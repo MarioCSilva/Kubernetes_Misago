@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: misago-app
+  labels:
+    app: misago
+spec:
+  replicas: 1 #FIXME:
+  selector:
+    matchLabels:
+      app: misago
+  template:
+    metadata:
+      labels:
+        app: misago
+    spec:
+      containers:
+        - image: registry.deti:5000/gic6_misago
+          name: misago
+          env:
+            - name: POSTGRES_USER
+              value: misago
+            - name: POSTGRES_PASSWORD
+              value: misago
+            - name: POSTGRES_DB
+              value: misago
+            - name: POSTGRES_HOST
+              value: postgres-service
+            - name: POSTGRES_TEST_DB
+              value: misago_test
+            - name: SUPERUSER_USERNAME
+              value: Admin
+            - name: SUPERUSER_EMAIL
+              value: admin@example.com
+            - name: SUPERUSER_PASSWORD
+              value: password
+            - name: ALLOWED_HOST
+              value: app.gic6.k3s
+          #volumeMounts:
+          #  - name: static-files
+          #    mountPath: /srv/misago/frontend/static/
+          ports:
+          - containerPort: 8000
+              # name: gunicorn  
+      #volumes:
+      #  - name: static-files
+      #    persistentVolumeClaim:
+      #     claimName: nginx-static-pvc
+          #envFrom:0
+          #- secretRef:
+          #    name: misago-secret
+          #- configMapRef:
+          #    name: misago-config
+
+# create misago service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: misago-service
+  namespace: gic6
+spec:
+  selector:
+    app: misago
+  ports:
+    - port: 8000
+      targetPort: 8000

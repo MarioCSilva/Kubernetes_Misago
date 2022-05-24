@@ -1,0 +1,49 @@
+# Create Postgres Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: gic6
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+#Create Postgres deployment
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: gic6
+spec:
+  serviceName: postgres-service
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1 # TODO:
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers: # containers of this deployment
+        - image: postgres:10 # TODO: talvez ter a nossa imagem para depois se precisarmos de cenas
+          name: postgres
+          ports: 
+          - containerPort: 5432 # TODO: idk se é preciso
+          volumeMounts:
+            - name: postgres-volume # Needs to match the name of the volume that is specified below in the volumes
+              mountPath: /data # Path of the volume in the container
+          env:
+          - name: POSTGRES_USER
+            value: "misago"
+          - name: POSTGRES_PASSWORD
+            value: "misago"
+      volumes:
+        - name: postgres-volume
+          persistentVolumeClaim:
+            claimName: postgres-pvc
