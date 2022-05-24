@@ -15,8 +15,9 @@ spec:
         app: misago
     spec:
       containers:
-        - image: registry.deti:5000/gic6_misago:1
+        - image: registry.deti:5000/gic6-misago
           name: misago
+          tty: true
           env:
             - name: POSTGRES_USER
               value: misago
