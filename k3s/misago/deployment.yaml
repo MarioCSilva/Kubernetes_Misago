@@ -15,7 +15,7 @@ spec:
         app: misago
     spec:
       containers:
-        - image: registry.deti:5000/gic6_misago
+        - image: registry.deti:5000/gic6_misago:1
           name: misago
           env:
             - name: POSTGRES_USER
@@ -36,16 +36,16 @@ spec:
               value: password
             - name: ALLOWED_HOST
               value: app.gic6.k3s
-          #volumeMounts:
-          #  - name: static-files
-          #    mountPath: /srv/misago/frontend/static/
+          volumeMounts:
+           - name: static-files
+             mountPath: /srv/misago/static
           ports:
           - containerPort: 8000
               # name: gunicorn  
-      #volumes:
-      #  - name: static-files
-      #    persistentVolumeClaim:
-      #     claimName: nginx-static-pvc
+      volumes:
+       - name: static-files
+         persistentVolumeClaim:
+          claimName: nginx-static-pvc
           #envFrom:0
           #- secretRef:
           #    name: misago-secret

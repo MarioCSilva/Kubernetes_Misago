@@ -5,8 +5,8 @@ metadata:
   namespace: gic6 
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: longhorn
   resources:
     requests:
-      storage: 1Gi
+      storage: 100Mi
