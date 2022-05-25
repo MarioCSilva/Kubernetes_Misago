@@ -45,6 +45,11 @@ data:
           proxy_set_header Connection "";
           proxy_pass http://misago-frontend-service:8001/;
         }
+
+        location /promopage {
+          root /static/;
+          index index.html;
+        }
         
         location /static {
           root /;

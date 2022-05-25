@@ -80,7 +80,8 @@ kubectl apply -f nginx-service.yaml -n gic6
 kubectl apply -f nginx-deployment.yaml -n gic6
 ```
 
-- From the root folder, manually move the files to the static volume configured on nginx:
+- Access the pod that is running misago and from the root folder, manually copy/move the files to the static volume configured on nginx:
 ```
 cp -r misago/static/ static/
+cp -r promopage/ static/
 ```
