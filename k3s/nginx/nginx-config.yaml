@@ -28,13 +28,22 @@ data:
         listen 80 default_server;
         server_name app.gic6.k3s;
 
-        location / {
+        location /api {
           # proxy_pass http://app:8080/;
           proxy_set_header   X-Real-IP $remote_addr;
           proxy_set_header   Host      $http_host;
           proxy_http_version 1.1;
           proxy_set_header Connection "";
           proxy_pass http://misago-service:8000/;
+        }
+
+        location / {
+          # proxy_pass http://app:8080/;
+          proxy_set_header   X-Real-IP $remote_addr;
+          proxy_set_header   Host      $http_host;
+          proxy_http_version 1.1;
+          proxy_set_header Connection "";
+          proxy_pass http://misago-frontend-service:8000/;
         }
         
         location /static {
