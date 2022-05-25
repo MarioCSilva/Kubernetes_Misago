@@ -1,3 +1,27 @@
+## Postgres
+
+Go to the `k3s/secrets` directory and:
+
+- Deploy Postgres Secrets:
+
+    kubectl apply -f postgres-secrets.yaml
+
+Then, inside the `postgres` folder:
+
+- Deploy the Persistance Volume Claim:
+
+    kubectl apply -f postgres-pvc.yaml
+
+- Deploy the Stateful Set:
+
+    kubectl apply -f postgres-statefulset.yaml
+
+- Deploy the Service:
+
+    kubectl apply -f postgres-service.yaml
+
+
+## Misago - Django
 
 - Build the docker image from the Dockerfile in the root folder.
 
@@ -6,10 +30,6 @@
 - Push misago image built from the dockerfile to a registry.
 
     docker push registry.deti:5000/gic6-misago
-
-- Deploy Postgres
-
-
 
 
 
