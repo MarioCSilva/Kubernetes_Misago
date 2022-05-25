@@ -24,7 +24,7 @@ spec:
           resources: {}
           volumeMounts:
             - name: static-files
-              mountPath: /data
+              mountPath: /static
             - name: nginx-conf
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
@@ -93,11 +93,11 @@ data:
           proxy_set_header   Host      $http_host;
           proxy_http_version 1.1;
           proxy_set_header Connection "";
-          proxy_pass http://misago-service:8000;
+          proxy_pass http://misago-service:8000/;
         }
         
         location /static {
-          root /data;
+          root /;
         }
       }
     }
