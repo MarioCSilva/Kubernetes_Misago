@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: misago-frontend-app
+  labels:
+    app: misago-frontend
+spec:
+  replicas: 1 #FIXME:
+  selector:
+    matchLabels:
+      app: misago-frontend
+  template:
+    metadata:
+      labels:
+        app: misago-frontend
+    spec:
+      containers:
+        - image: registry.deti:5000/gic6-misago-frontend
+          name: misago-frontend
+          tty: true
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_HOST
+            - name: POSTGRES_TEST_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_TEST_DB
+            - name: SUPERUSER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: SUPERUSER_USERNAME
+            - name: SUPERUSER_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: SUPERUSER_EMAIL
+            - name: SUPERUSER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: SUPERUSER_PASSWORD
+            - name: ALLOWED_HOST
+              value: app.gic6.k3s
+          volumeMounts:
+            - name: static-files
+              mountPath: /srv/misago/static
+          ports:
+            - containerPort:
+                8000
+                # name: gunicorn
+      volumes:
+        - name: static-files
+          persistentVolumeClaim:
+            claimName: nginx-static-pvc
+            #envFrom:0
+            #- secretRef:
+            #    name: misago-secret
+            #- configMapRef:
+            #    name: misago-config

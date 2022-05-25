@@ -35,15 +35,32 @@ In each `yaml` file the namespace tag must be edited to the desired namespace to
     kubectl apply -f postgres-service.yaml -n gic6
 
 
-## Misago - Django
+## Misago - Backend
 
-- Build the docker image from the Dockerfile in the root folder.
+- Build the docker image from the `Dockerfile` in the root folder.
 
     docker build -t registry.deti:5000/gic6-misago .
 
 - Push misago image built from the dockerfile to a registry.
 
     docker push registry.deti:5000/gic6-misago
+
+
+## Misago - Frontend
+
+- Build the docker image from the `Dockerfile.frontend` in the root folder.
+
+    docker build -f Dockerfile.frontend -t registry.deti:5000/gic6-misago-frontend .
+
+- Push the built image from the to a registry.
+
+    docker push registry.deti:5000/gic6-misago-frontend
+
+Then, access the `k3s/frontend` directory and deploy the Service and Deployment to the namespace:
+
+    kubectl apply -f misago-frontend-service.yaml -n gic6
+
+    kubectl apply -f misago-frontend-deployment.yaml -n gic6
 
 
 
