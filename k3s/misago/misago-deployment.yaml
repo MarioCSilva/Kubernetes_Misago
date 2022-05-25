@@ -22,42 +22,42 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
               secretKeyRef:
-                name: postgres_secrets
+                name: postgres-secrets
                 key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
               secretKeyRef:
-                name: postgres_secrets
+                name: postgres-secrets
                 key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
               secretKeyRef:
-                name: postgres_secrets
+                name: postgres-secrets
                 key: POSTGRES_DB
             - name: POSTGRES_HOST
               valueFrom:
               secretKeyRef:
-                name: postgres_secrets
+                name: postgres-secrets
                 key: POSTGRES_HOST
             - name: POSTGRES_TEST_DB
               valueFrom:
               secretKeyRef:
-                name: postgres_secrets
+                name: postgres-secrets
                 key: POSTGRES_TEST_DB
             - name: SUPERUSER_USERNAME
               valueFrom:
               secretKeyRef:
-                name: postgres_secrets
+                name: postgres-secrets
                 key: SUPERUSER_USERNAME
             - name: SUPERUSER_EMAIL
               valueFrom:
               secretKeyRef:
-                name: postgres_secrets
+                name: postgres-secrets
                 key: SUPERUSER_EMAIL
             - name: SUPERUSER_PASSWORD
               valueFrom:
               secretKeyRef:
-                name: postgres_secrets
+                name: postgres-secrets
                 key: SUPERUSER_PASSWORD
             - name: ALLOWED_HOST
               value: app.gic6.k3s
