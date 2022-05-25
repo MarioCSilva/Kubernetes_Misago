@@ -22,7 +22,7 @@ spec:
           resources: {}
           volumeMounts:
             - name: static-files
-              mountPath: /data
+              mountPath: /static
             - name: nginx-conf
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
