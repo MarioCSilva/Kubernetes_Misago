@@ -1,0 +1,79 @@
+# PostgreSQL StatefulSet Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: gic6
+spec:
+  selector:
+    app: postgresql-db
+#  type: LoadBalancer
+  clusterIP: None
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+# PostgreSQL StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql-db
+  namespace: gic6
+spec:
+  minReadySeconds: 10
+  serviceName: postgres-service
+  selector:
+    matchLabels:
+      app: postgresql-db
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: postgresql-db
+    spec:
+      containers:
+        - name: postgresql-db
+          image: postgres:10
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgresql-db-disk
+              mountPath: /var/lib/postgresql/data
+              subPath: data
+          env:
+            - name: POSTGRES_USER
+              value: "misago"
+            - name: POSTGRES_PASSWORD
+              value: "misago"
+      volumes:
+        - name: postgresql-db-disk
+          persistentVolumeClaim:
+            claimName: postgresql-db-pvc
+---
+# PostgreSQL PersistentVolumeClaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: postgresql-db-pvc
+    namespace: gic6
+spec:
+    accessModes:
+      - ReadWriteMany
+    storageClassName: longhorn
+    resources:
+      requests:
+        storage: 100Mi
+#---
+## PostGreSQL ConfigMap
+## PostgreSQL StatefulSet ConfigMap
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: postgres-db-config
+#labels:
+#app: postgresql-db
+#data:
+#  POSTGRES_DB: testdb
+#  POSTGRES_USER: testdbuser
+#  POSTGRES_PASSWORD: testdbuserpassword
+#  PGDATA: /data/pgdata
