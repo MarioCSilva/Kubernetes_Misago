@@ -7,6 +7,9 @@
 
     docker push registry.deti:5000/gic6-misago
 
+- Deploy Postgres
+
+
 
 
 
