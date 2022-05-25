@@ -4,7 +4,7 @@
 FROM python:3.7
 
 ENV PYTHONUNBUFFERED 1
-ENV IN_MISAGO_DOCKER 1
+ENV IN_MISAGO_DOCKER 0
 
 # Install dependencies in one single command/layer
 RUN apt-get update && apt-get install -y \
