@@ -1,4 +1,15 @@
 
+- Build the docker image from the Dockerfile in the root folder.
+
+    docker build -t registry.deti:5000/gic6-misago .
+
+- Push misago image built from the dockerfile to a registry.
+
+    docker push registry.deti:5000/gic6-misago
+
+
+
+
 ## Redis
 
 ### Note:

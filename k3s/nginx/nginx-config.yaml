@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: gic6
+data:
+  nginx.conf: |
+    user  nginx;
+
+    worker_processes  1;
+
+    error_log  /var/log/nginx/error.log warn;
+
+    pid        /var/run/nginx.pid;
+
+    events {
+      worker_connections  1024;
+    }
+
+    http {
+      include       /etc/nginx/mime.types;
+      
+      default_type  application/octet-stream;
+
+      sendfile        on;
+      
+      server {
+        listen 80 default_server;
+        server_name app.gic6.k3s;
+
+        location / {
+          # proxy_pass http://app:8080/;
+          proxy_set_header   X-Real-IP $remote_addr;
+          proxy_set_header   Host      $http_host;
+          proxy_http_version 1.1;
+          proxy_set_header Connection "";
+          proxy_pass http://misago-service:8000;
+        }
+        
+        location /static {
+          root /data;
+        }
+      }
+    }
