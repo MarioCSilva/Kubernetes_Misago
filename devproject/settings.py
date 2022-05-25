@@ -103,7 +103,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "/static/static/"
 
 
 # User uploads (Avatars, Attachments, files uploaded in other Django apps, ect.)
@@ -115,7 +115,7 @@ MEDIA_URL = "/static/media/"
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 # https://docs.djangoproject.com/en/1.11/ref/settings/#static-root
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static/static")
 
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.

@@ -4,7 +4,6 @@ dev/
 dist/
 docs/
 env/
-frontend/
 venv/
 
 .DS_Store
