@@ -122,8 +122,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/static")
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # https://docs.djangoproject.com/en/1.11/ref/settings/#media-root
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
-
+MEDIA_ROOT = os.path.join(BASE_DIR, "../static/media")
 
 # This setting defines the additional locations the staticfiles app will traverse if the FileSystemFinder finder
 # is enabled, e.g. if you use the collectstatic or findstatic management command or use the static file serving view.

@@ -1,4 +1,4 @@
-python manage.py migrate > $EX
+python manage.py migrate
 EXISTING_INSTALLATION=`echo "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.exists())" |python manage.py shell`
 if [ "$EXISTING_INSTALLATION" = "True" ]; then 
     echo "Loaddata has already run"
