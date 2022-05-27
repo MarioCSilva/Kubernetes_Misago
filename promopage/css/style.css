@@ -834,6 +834,9 @@ border-radius: 50%;
 	position: relative;
 	border: 0;
 }
+.image-box {
+	min-height: 100px;
+}
 .isotope-item .btn-default:hover {
 	color: #ffffff;
 }
