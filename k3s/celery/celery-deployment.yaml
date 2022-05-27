@@ -5,7 +5,7 @@ metadata:
   labels:
     app: celery
 spec:
-  replicas: 1 #FIXME:
+  replicas: 2
   selector:
     matchLabels:
       app: celery
@@ -17,7 +17,6 @@ spec:
       containers:
         - image: registry.deti:5000/gic6-celery
           name: celery
-          #tty: true
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -61,19 +60,6 @@ spec:
                   key: SUPERUSER_PASSWORD
             - name: ALLOWED_HOST
               value: app.gic6.k3s
-          #volumeMounts:
-          #  - name: static-files
-          #    mountPath: /srv/misago/static
           ports:
             - containerPort:
                 8000
-                # name: gunicorn
-      # TODO: logs volumes:
-      #   - name: static-files
-      #     persistentVolumeClaim:
-      #       claimName: nginx-static-pvc
-      #       #envFrom:0
-            #- secretRef:
-            #    name: misago-secret
-            #- configMapRef:
-            #    name: misago-config

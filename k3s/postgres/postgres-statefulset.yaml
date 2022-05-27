@@ -1,33 +1,41 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres
+  name: postgresql-db
   namespace: gic6
 spec:
+  minReadySeconds: 10
   serviceName: postgres-service
   selector:
     matchLabels:
-      app: postgres
-  replicas: 1 # TODO:
+      app: postgresql-db
+  replicas: 1
   template:
     metadata:
       labels:
-        app: postgres
+        app: postgresql-db
     spec:
-      containers: # containers of this deployment
-        - image: postgres:10 # TODO: talvez ter a nossa imagem para depois se precisarmos de cenas
-          name: postgres
-          ports: 
-          - containerPort: 5432 # TODO: idk se é preciso
+      containers:
+        - name: postgresql-db
+          image: postgres:10
+          ports:
+            - containerPort: 5432
           volumeMounts:
-            - name: postgres-volume # Needs to match the name of the volume that is specified below in the volumes
-              mountPath: /data # Path of the volume in the container
+            - name: postgresql-db-disk
+              mountPath: /var/lib/postgresql/data
+              subPath: data
           env:
-          - name: POSTGRES_USER
-            value: "misago"
-          - name: POSTGRES_PASSWORD
-            value: "misago"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
       volumes:
-        - name: postgres-volume
+        - name: postgresql-db-disk
           persistentVolumeClaim:
-            claimName: postgres-pvc
+            claimName: postgresql-db-pvc
