@@ -22,3 +22,48 @@ spec:
             name: nginx
             port: 
               number: 80
+
+  - host: prom.gic6.k3s
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus
+            port:
+              number: 9090
+
+  - host: pg-exporter.gic6.k3s
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: postgres
+              port:
+                number: 9187
+---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: prometheus-gic6
+#  namespace: gic6
+#  annotations:
+#    kubernetes.io/ingress.class: traefik
+#    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+#    traefik.ingress.kubernetes.io/redirect-entry-point: https
+#    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+#spec:
+#  rules:
+#  - host: prometheus.gic6.k3s
+#    http:
+#      paths:
+#      - path: /
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: prometheus
+#            port:
+#              number: 80

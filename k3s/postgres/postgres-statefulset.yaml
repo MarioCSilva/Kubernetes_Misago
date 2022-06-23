@@ -5,7 +5,7 @@ metadata:
   namespace: gic6
 spec:
   minReadySeconds: 10
-  serviceName: postgres-service
+  serviceName: postgres
   selector:
     matchLabels:
       app: postgresql-db
@@ -19,7 +19,8 @@ spec:
         - name: postgresql-db
           image: postgres:10
           ports:
-            - containerPort: 5432
+            - name: psql
+              containerPort: 5432
           volumeMounts:
             - name: postgresql-db-disk
               mountPath: /var/lib/postgresql/data
@@ -31,6 +32,25 @@ spec:
                   name: postgres-secrets
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+
+        - name: postgres-exporter
+          image: quay.io/prometheuscommunity/postgres-exporter
+          ports:
+            - name: pg-exporter
+              containerPort: 9187
+          env:
+            - name: DATA_SOURCE_URI
+              value: postgres?sslmode=disable
+            - name: DATA_SOURCE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_USER
+            - name: DATA_SOURCE_PASS
               valueFrom:
                 secretKeyRef:
                   name: postgres-secrets
