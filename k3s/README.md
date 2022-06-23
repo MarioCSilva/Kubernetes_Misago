@@ -85,3 +85,15 @@ kubectl apply -f nginx-deployment.yaml -n gic6
 cp -r misago/static/ static/
 cp -r promopage/ static/
 ```
+
+
+
+## Monitoring
+
+Forward the port 9113 to the 9010 on the host machine:
+
+```
+kubectl port-forward --namespace gic6 svc/nginx 9010:9113 &
+```
+
+
