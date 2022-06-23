@@ -1,49 +1,25 @@
 global:
-      scrape_interval: 20s
-      evaluation_interval: 20s
-      external_labels:
-        monitor: gic6-monitor
-    rule_files:
-      - /etc/prometheus/prometheus.rules
+  scrape_interval: 20s      # time between each scrape (data pull from exporters), can be overrided in specific jobs
+  evaluation_interval: 20s  # time between each evaluation of Prometheus' alerting rules
+  # external_labels:
+  #   monitor: 'gic6-monitor'
+rule_files:
+  - /etc/prometheus/prometheus.rules
+# alerting:
+#   ...
 
-    scrape_configs:
-    # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-    - job_name: 'prometheus'
+scrape_configs:
+- job_name: 'prometheus'
+  static_configs:
+    - targets: ['localhost:9090']
 
-      # Override the global default and scrape targets from this job every 5 seconds.
-      scrape_interval: 5s
+- job_name: 'postgres-exporter'
+  static_configs:
+    - targets:
+      - pg-exporter.gic6.k3s
+      # - localhost:9187
 
-      static_configs:
-        - targets: ['localhost:9090']
-
-    - job_name: 'kubernetes-nodes'
-      scheme: https
-
-      tls_config:
-        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-
-      kubernetes_sd_configs:
-      - role: node
-
-      relabel_configs:
-      - action: labelmap
-        regex: __meta_kubernetes_node_label_(.+)
-      - target_label: __address__
-        replacement: kubernetes.default.svc:443
-      - source_labels: [__meta_kubernetes_node_name]
-        regex: (.+)
-        target_label: __metrics_path__
-        replacement: /api/v1/nodes/${1}/proxy/metrics
-
-    - job_name: 'k8pods'
-      kubernetes_sd_configs:
-        - role: pod
-      relabel_configs:
-        - source_labels: [__meta_kubernetes_pod_container_port_name]
-          regex: metrics
-          action: keep
-        - source_labels: [__meta_kubernetes_pod_container_name]
-          target_label: job
-
-    - job_name: 'pg_exporter'
+- job_name: 'nginx-exporter'
+  static_configs:
+    - targets:
+      - localhost:9010
