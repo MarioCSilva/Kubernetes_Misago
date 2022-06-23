@@ -15,7 +15,7 @@ spec:
         app: misago-frontend
     spec:
       containers:
-        - image: registry.deti:5000/gic6-misago
+        - image: registry.deti:5000/gic6-misago:latest
           name: misago-frontend
           tty: true
           env:
