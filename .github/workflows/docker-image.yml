@@ -16,3 +16,5 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build -t registry.deti:5000/gic6-misago .
+    - name: Push the Docker image to a registry
+      run: docker push registry.deti:5000/gic6-misago
