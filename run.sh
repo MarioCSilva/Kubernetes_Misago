@@ -53,4 +53,4 @@ do
 done
 echo "MISAGO=$MISAGO"
 
-kubectl exec -n gic6 -it $MISAGO -- /bin/bash -c "cp -r /srv/misago/misago/static/* /srv/misago/static && cp -r /srv/misago/promopage/* /srv/misago/static"
+kubectl exec -n gic6 -it $MISAGO -- /bin/bash -c "cp -r /srv/misago/misago/static/* /srv/misago/static && cp -r /srv/misago/promopage /srv/misago/static"
