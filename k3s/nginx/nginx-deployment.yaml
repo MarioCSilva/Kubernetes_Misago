@@ -15,8 +15,7 @@ spec:
         app: nginx
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/path: "/metrics"
-        prometheus.io/port: "9113"
+        prometheus.io/port: "4040"
     spec:
       containers:
         - image: nginx        # default nginx image
@@ -31,13 +30,23 @@ spec:
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
               readOnly: true
+        # - name: exporter
+        #   ports:
+        #     - name: exporter
+        #       containerPort: 9113
+        #   image: nginx/nginx-prometheus-exporter:0.8.0
+        #   args:
+        #     - -nginx.scrape-uri=http://localhost/nginx_status
         - name: exporter
           ports:
             - name: exporter
-              containerPort: 9113
-          image: nginx/nginx-prometheus-exporter:0.8.0
-          args:
-            - -nginx.scrape-uri=http://localhost/nginx_status
+              containerPort: 4040
+          image: quay.io/martinhelmich/prometheus-nginxlog-exporter:stable
+          args: ["-config-file", "/etc/prometheus-nginxlog-exporter/config.hcl"]
+          volumeMounts:
+            - name: exporter-config
+              mountPath: /etc/prometheus-nginxlog-exporter/config.hcl
+              subPath: config.hcl
       restartPolicy: Always
       volumes:
         - name: static-files
@@ -49,4 +58,10 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
+        - name: exporter-config
+          configMap:
+            name: exporter-config
+            items:
+              - key: config.hcl
+                path: config.hcl
  

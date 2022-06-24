@@ -23,10 +23,16 @@ data:
       default_type  application/octet-stream;
 
       sendfile        on;
-      
+
+      access_log      on;
+
+      log_format syslog_format '$remote_addr - - [$time_local] \"$request\" $status $body_bytes_sent \"$http_referer\" \"$http_user_agent\"';
+
       server {
         listen 80 default_server;
         server_name app.gic6.k3s;
+
+        access_log syslog:server=127.0.0.1:5531,facility=local7,tag=nginx syslog_format;
 
         location /api/ {
           # proxy_pass http://app:8080/;

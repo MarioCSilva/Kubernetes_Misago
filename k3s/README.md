@@ -56,6 +56,13 @@ docker build -t registry.deti:5000/gic6-misago .
 docker push registry.deti:5000/gic6-misago
 ```
 
+Access the `k3s/misago` directory and deploy the Service and Deployment to the namespace:
+```
+kubectl apply -f misago-service.yaml -n gic6
+
+kubectl apply -f misago-deployment.yaml -n gic6
+```
+
 
 ## Misago - Frontend
 
