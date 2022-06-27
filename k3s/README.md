@@ -78,6 +78,8 @@ kubectl apply -f misago-frontend-deployment.yaml -n gic6
 
 - From the `k3s/nginx` directory, deploy the Nginx ConfigMap, apply the Persistance Volume Claim, the Service and the Deployment, with the following commands:
 ```
+kubectl apply -f exporter-config.yaml -n gic6
+
 kubectl apply -f nginx-config.yaml -n gic6
 
 kubectl apply -f nginx-pvc.yaml -n gic6

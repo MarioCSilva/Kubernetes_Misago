@@ -28,12 +28,15 @@ kubectl apply -f k3s/frontend/misago-frontend-service.yaml -n gic6
 kubectl apply -f k3s/frontend/misago-frontend-deployment.yaml -n gic6
 
 # nginx 
+kubectl apply -f k3s/nginx/exporter-config.yaml -n gic6
 kubectl apply -f k3s/nginx/nginx-config.yaml -n gic6
 kubectl apply -f k3s/nginx/nginx-pvc.yaml -n gic6
 kubectl apply -f k3s/nginx/nginx-service.yaml -n gic6
 kubectl apply -f k3s/nginx/nginx-deployment.yaml -n gic6
 
 GET_PODS_OPTIONS='--no-headers -o custom-columns=:metadata.name --field-selector=status.phase==Running'
+
+sleep 5
 
 NGINX=
 while [ -z "$NGINX" ]
