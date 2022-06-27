@@ -64,7 +64,7 @@ data:
         }
         
         location /static {
-          root /;
+          root /static;
         }
       }
     }

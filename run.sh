@@ -22,7 +22,6 @@ kubectl apply -f k3s/misago/misago-config.yaml -n gic6
 kubectl apply -f k3s/misago/misago-service.yaml -n gic6
 kubectl apply -f k3s/misago/misago-deployment.yaml -n gic6
 
-
 # frontend
 kubectl apply -f k3s/frontend/misago-frontend-service.yaml -n gic6
 kubectl apply -f k3s/frontend/misago-frontend-deployment.yaml -n gic6
