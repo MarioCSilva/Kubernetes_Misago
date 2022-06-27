@@ -22,28 +22,6 @@ spec:
             name: nginx
             port: 
               number: 80
-
-  - host: prom.gic6.k3s
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prometheus
-            port:
-              number: 9090
-
-  - host: pg-exporter.gic6.k3s
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: postgres
-              port:
-                number: 9187
 ---
 #apiVersion: networking.k8s.io/v1
 #kind: Ingress
