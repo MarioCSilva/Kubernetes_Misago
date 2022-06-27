@@ -56,3 +56,8 @@ done
 echo "MISAGO=$MISAGO"
 
 kubectl exec -n gic6 -it $MISAGO -- /bin/bash -c "mkdir -p /srv/misago/static/static && cp -r /srv/misago/misago/static/* /srv/misago/static/static && cp -r /srv/misago/promopage /srv/misago/static"
+
+
+kubectl port-forward --namespace gic6 svc/nginx 9010:4040 &
+
+kubectl port-forward --namespace gic6 svc/postgres 9187:9187 &
